@@ -1,6 +1,4 @@
 import type { Copy, Lang } from '../content'
-import { displayFont } from '../content'
-import { cx } from '../cx'
 import { Icon, type IconName } from './Icon'
 import { SectionHeading } from './SectionHeading'
 
@@ -8,22 +6,31 @@ const icons: IconName[] = ['user', 'pin', 'truck', 'wallet']
 
 export function Process({ copy, lang }: { copy: Copy['process']; lang: Lang }) {
   return (
-    <section id="process" className="mx-auto max-w-6xl px-5 py-20 lg:py-28">
+    <section id="process" className="paper-grid px-5 pb-16 pt-24 lg:pb-24 lg:pt-32">
+      <div className="mx-auto max-w-6xl">
       <SectionHeading eyebrow={copy.eyebrow} title={copy.title} lede={copy.lede} lang={lang} />
-      <ol className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+      <ol className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         {copy.steps.map((step, index) => (
-          <li key={step.title} className="lift rounded-3xl bg-card p-5 shadow-[0_10px_40px_rgba(16,19,26,0.05)] ring-1 ring-ink/5">
-            <div className="flex items-center justify-between" dir="ltr">
-              <span className={cx('text-sm font-bold text-ink/25', lang === 'en' && 'font-display')}>{index + 1}</span>
-              <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-teal/15 text-teal-deep shadow-[inset_0_0_0_1px_rgba(12,111,120,0.12)]">
-                <Icon name={icons[index] ?? 'spark'} />
+          <li
+            key={step.title}
+            className="rounded-2xl bg-white px-5 py-6 shadow-[0_16px_36px_-26px_rgba(12,39,68,0.45)] ring-1 ring-ink/8"
+          >
+            <div className="flex items-center gap-3.5">
+              <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-signal-soft text-signal-deep">
+                <Icon name={icons[index] ?? 'spark'} className="h-5 w-5" />
               </span>
+              <div className="min-w-0 text-start">
+                <span className="font-display text-xs font-semibold tracking-wide text-signal" dir="ltr">
+                  0{index + 1}
+                </span>
+                <h3 className="text-base font-semibold leading-snug text-ink">{step.title}</h3>
+              </div>
             </div>
-            <h3 className={cx('mt-6 text-lg font-bold', displayFont(lang))}>{step.title}</h3>
-            <p className="mt-2 text-sm leading-relaxed text-mist">{step.body}</p>
+            <p className="mt-4 text-sm leading-relaxed text-mist">{step.body}</p>
           </li>
         ))}
       </ol>
+      </div>
     </section>
   )
 }

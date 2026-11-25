@@ -1,7 +1,9 @@
 import { useEffect, useState } from 'react'
 import type { Copy, Lang } from '../content'
 import { cx } from '../cx'
+import { Icon } from './Icon'
 import { Mark } from './Mark'
+import { btnBase, btnPrimary } from './styles'
 
 export function Nav({
   copy,
@@ -13,6 +15,36 @@ export function Nav({
   setLang: (lang: Lang) => void
 }) {
   const [open, setOpen] = useState(false)
+  const [scrolled, setScrolled] = useState(false)
+  const [active, setActive] = useState('')
+
+  const sectionIds = copy.nav.links.map((link) => link.href).join(' ')
+
+  useEffect(() => {
+    const links = sectionIds.split(' ')
+    const onScroll = () => {
+      setScrolled(window.scrollY > 16)
+      const probe = Math.round(window.innerHeight * 0.28)
+      const visible = links
+        .map((href) => {
+          const section = document.querySelector(href)
+          if (!section) return null
+          const rect = section.getBoundingClientRect()
+          return { href, top: rect.top, bottom: rect.bottom }
+        })
+        .filter((section): section is { href: string; top: number; bottom: number } => section !== null)
+        .filter((section) => section.top <= probe && section.bottom > probe)
+        .sort((a, b) => b.top - a.top)
+      setActive(visible[0]?.href ?? '')
+    }
+    onScroll()
+    window.addEventListener('scroll', onScroll, { passive: true })
+    window.addEventListener('resize', onScroll)
+    return () => {
+      window.removeEventListener('scroll', onScroll)
+      window.removeEventListener('resize', onScroll)
+    }
+  }, [sectionIds])
 
   useEffect(() => {
     if (!open) return
@@ -31,36 +63,50 @@ export function Nav({
   }, [open])
 
   const close = () => setOpen(false)
+  const solid = scrolled || open
 
   return (
-    <header className="fixed inset-x-0 top-0 z-50 border-b border-white/10 bg-ink/90 text-white backdrop-blur-xl">
+    <header className="fixed inset-x-0 top-0 z-50 px-3 pt-3 sm:px-5">
       <a
         href="#main"
-        className="sr-only focus:not-sr-only focus:absolute focus:start-4 focus:top-3 focus:z-50 focus:rounded-full focus:bg-teal focus:px-4 focus:py-2 focus:text-ink"
+        className="sr-only focus:not-sr-only focus:absolute focus:start-4 focus:top-3 focus:z-50 focus:rounded-full focus:bg-signal focus:px-4 focus:py-2 focus:text-ink"
       >
         {copy.nav.skip}
       </a>
-      <div className="mx-auto flex h-[72px] max-w-6xl items-center justify-between gap-4 px-5">
+      <div
+        className={cx(
+          'mx-auto flex h-14 max-w-6xl items-center justify-between gap-4 rounded-full border border-line ps-3 pe-2 text-ink transition-all duration-300 sm:ps-4',
+          solid ? 'bg-white/95 shadow-[0_10px_30px_-18px_rgba(12,39,68,0.35)] backdrop-blur-xl' : 'bg-white/75 backdrop-blur-md',
+        )}
+      >
         <a href="#top" className="flex items-center gap-2.5" onClick={close}>
-          <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-white text-ink shadow-[0_0_0_4px_rgba(30,212,194,0.15)]">
-            <Mark className="h-7 w-7" />
+          <Mark className="h-8 w-8 text-navy" />
+          <span className={cx('whitespace-nowrap text-base font-bold', lang === 'en' && 'font-display tracking-tight')}>
+            {copy.nav.brand}
           </span>
-          <span className="whitespace-nowrap text-sm font-semibold tracking-tight">{copy.nav.brand}</span>
         </a>
 
-        <nav className="hidden items-center gap-5 xl:flex" aria-label="Main">
+        <nav className="hidden items-center gap-0.5 xl:flex" aria-label="Main">
           {copy.nav.links.map((link) => (
-            <a key={link.href} href={link.href} className="text-sm font-medium text-white/70 transition hover:text-teal">
+            <a
+              key={link.href}
+              href={link.href}
+              aria-current={active === link.href ? 'true' : undefined}
+              className={cx(
+                'rounded-full px-3 py-1.5 text-sm font-medium transition',
+                active === link.href ? 'bg-canvas text-ink' : 'text-mist hover:bg-canvas hover:text-ink',
+              )}
+            >
               {link.label}
             </a>
           ))}
         </nav>
 
         <div className="flex items-center gap-2">
-          <div className="flex items-center rounded-full border border-white/15 p-0.5 text-xs font-bold">
+          <div className="flex items-center rounded-full border border-line bg-canvas p-0.5 text-xs font-bold">
             <button
               type="button"
-              className={cx('rounded-full px-2.5 py-1', lang === 'ar' ? 'bg-white text-ink' : 'text-white/70')}
+              className={cx('rounded-full px-2.5 py-1.5 transition', lang === 'ar' ? 'bg-ink text-white' : 'text-mist hover:text-ink')}
               aria-pressed={lang === 'ar'}
               aria-label={copy.nav.langArLabel}
               onClick={() => setLang('ar')}
@@ -70,9 +116,8 @@ export function Nav({
             <button
               type="button"
               className={cx(
-                'rounded-full px-2.5 py-1',
-                lang === 'en' ? 'bg-white text-ink' : 'text-white/70',
-                lang === 'en' && 'font-display',
+                'rounded-full px-2.5 py-1.5 font-display transition',
+                lang === 'en' ? 'bg-ink text-white' : 'text-mist hover:text-ink',
               )}
               aria-pressed={lang === 'en'}
               aria-label={copy.nav.langEnLabel}
@@ -83,13 +128,17 @@ export function Nav({
           </div>
           <a
             href={`/${lang}/login`}
-            className="hidden items-center rounded-full bg-teal px-4 py-2.5 text-sm font-semibold text-ink transition hover:bg-white sm:inline-flex"
+            className={cx(
+              btnPrimary,
+              'group hidden items-center justify-center gap-2 whitespace-nowrap rounded-xl px-3.5 py-2.5 text-sm font-bold transition duration-300 sm:inline-flex',
+            )}
           >
+            <Icon name="user" className="h-4 w-4" />
             {copy.nav.login}
           </a>
           <button
             type="button"
-            className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-white/20 xl:hidden"
+            className="inline-flex h-10 w-10 items-center justify-center rounded-xl border border-line bg-white xl:hidden"
             aria-expanded={open}
             aria-label={open ? copy.nav.close : copy.nav.menu}
             onClick={() => setOpen((value) => !value)}
@@ -98,28 +147,38 @@ export function Nav({
               {open ? (
                 <path d="M6 6l12 12M18 6 6 18" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
               ) : (
-                <path d="M4 7h16M4 12h16M4 17h16" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
+                <path d="M4 7h16M4 12h10M4 17h16" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
               )}
             </svg>
           </button>
         </div>
       </div>
+
       {open && (
-        <nav className="border-t border-white/10 bg-ink px-5 py-4 xl:hidden" aria-label="Mobile">
+        <nav
+          className="rise mx-auto mt-2 max-w-6xl rounded-2xl border border-line bg-white p-3 text-ink shadow-xl xl:hidden"
+          aria-label="Mobile"
+        >
           <ul className="grid gap-1">
             {copy.nav.links.map((link) => (
               <li key={link.href}>
-                <a href={link.href} onClick={close} className="block rounded-2xl px-3 py-3 text-base font-medium hover:bg-white/5">
+                <a
+                  href={link.href}
+                  onClick={close}
+                  aria-current={active === link.href ? 'true' : undefined}
+                  className={cx(
+                    'flex items-center justify-between rounded-xl px-3 py-3 text-base font-medium transition',
+                    active === link.href ? 'bg-canvas text-ink' : 'hover:bg-canvas',
+                  )}
+                >
                   {link.label}
+                  <Icon name="arrow" className="h-4 w-4 text-mist" />
                 </a>
               </li>
             ))}
           </ul>
-          <a
-            href={`/${lang}/login`}
-            onClick={close}
-            className="mt-3 inline-flex w-full items-center justify-center rounded-full bg-teal px-4 py-3 text-sm font-semibold text-ink"
-          >
+          <a href={`/${lang}/login`} onClick={close} className={cx(btnBase, btnPrimary, 'mt-3 w-full rounded-xl px-4 py-3.5')}>
+            <Icon name="user" className="h-4 w-4" />
             {copy.nav.login}
           </a>
         </nav>

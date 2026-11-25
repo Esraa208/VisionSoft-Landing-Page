@@ -4,9 +4,10 @@ import type { Copy, Lang } from '../content'
 import { displayFont } from '../content'
 import { cx } from '../cx'
 import { Mark } from './Mark'
+import { btnBase, btnPrimary } from './styles'
 
 const fieldClass =
-  'w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-white outline-none placeholder:text-white/35 focus:border-teal'
+  'w-full rounded-2xl border border-line bg-canvas px-4 py-3 text-sm text-ink outline-none placeholder:text-mist/70 focus:border-signal focus:ring-4 focus:ring-signal/15'
 
 export function LoginCard({ copy, lang }: { copy: Copy; lang: Lang }) {
   const [email, setEmail] = useState('')
@@ -23,15 +24,20 @@ export function LoginCard({ copy, lang }: { copy: Copy; lang: Lang }) {
   }
 
   return (
-    <main id="main" className="grid min-h-screen place-items-center bg-ink px-5 py-28">
-      <form onSubmit={onSubmit} className="w-full max-w-md rounded-[28px] border border-white/10 bg-panel p-6 text-white shadow-2xl sm:p-8">
+    <main id="main" className="relative grid min-h-screen place-items-center overflow-hidden bg-ink px-5 py-32">
+      <div aria-hidden="true" className="hero-bg pointer-events-none absolute inset-0" />
+      <div aria-hidden="true" className="map-dots pointer-events-none absolute inset-0" />
+      <form
+        onSubmit={onSubmit}
+        className="relative w-full max-w-md rounded-[28px] bg-card p-6 text-ink shadow-[0_40px_100px_-30px_rgba(0,0,0,0.65)] sm:p-8"
+      >
         <div className="flex flex-col items-center text-center">
-          <span className="flex h-16 w-16 items-center justify-center rounded-2xl bg-white text-ink">
+          <span className="flex h-16 w-16 items-center justify-center rounded-2xl bg-navy text-white">
             <Mark className="h-10 w-10" />
           </span>
           <h1 className={cx('mt-4 text-2xl font-bold', displayFont(lang))}>{copy.login.title}</h1>
         </div>
-        <label className="mt-6 grid gap-1.5 text-sm">
+        <label className="mt-6 grid gap-1.5 text-sm font-medium">
           {copy.login.email}
           <input
             type="text"
@@ -43,7 +49,7 @@ export function LoginCard({ copy, lang }: { copy: Copy; lang: Lang }) {
             onChange={(event) => setEmail(event.target.value)}
           />
         </label>
-        <label className="mt-4 grid gap-1.5 text-sm">
+        <label className="mt-4 grid gap-1.5 text-sm font-medium">
           {copy.login.password}
           <input
             type="password"
@@ -56,14 +62,14 @@ export function LoginCard({ copy, lang }: { copy: Copy; lang: Lang }) {
           />
         </label>
         {error && (
-          <p className="mt-3 text-sm text-teal" role="alert">
+          <p className="mt-3 text-sm font-medium text-alert" role="alert">
             {error}
           </p>
         )}
-        <button type="submit" className="mt-6 inline-flex w-full items-center justify-center rounded-2xl bg-teal py-3.5 text-sm font-bold text-ink">
+        <button type="submit" className={cx(btnBase, btnPrimary, 'mt-6 w-full rounded-2xl py-3.5')}>
           {copy.login.submit}
         </button>
-        <Link to={`/${lang}`} className="mt-4 block text-center text-sm text-white/60">
+        <Link to={`/${lang}`} className="mt-4 block text-center text-sm font-semibold text-mist transition hover:text-ink">
           {copy.nav.brand}
         </Link>
       </form>

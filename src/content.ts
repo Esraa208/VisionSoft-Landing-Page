@@ -86,14 +86,19 @@ const ar = {
     langEnLabel: 'English',
   },
   hero: {
-    title: 'نوصّل أعمالك إلى كل مكان',
+    badge: 'شحن وتوصيل لكل المحافظات',
+    titleLead: 'نوصّل أعمالك',
+    titleAccent: 'إلى كل مكان',
     lede: 'تتبّع شحنتك، تواصل معنا، وابدأ الشحن بخطوات بسيطة.',
     primary: 'تتبع الآن',
     secondary: 'سجّل كراسل',
     assurances: ['ضمان وسلامة الطرود', 'التزام دقيق بالمواعيد', 'تحصيل فوري للأموال'],
     console: {
+      badge: 'معاينة المنصة',
       title: 'تتبع فوري للشحنات',
       lede: 'اكتب رقم البوليصة لمتابعة الشحنة',
+      waybillLabel: 'رقم البوليصة',
+      sample: 'VS-0482-7731',
       stages: ['تم الاستلام', 'خرج للتوصيل', 'في الطريق', 'تسليم ناجح'],
       placeholder: 'أدخل رقم البوليصة المحلية...',
       action: 'تتبع الآن',
@@ -142,11 +147,13 @@ const ar = {
     error: 'اكتب رقم البوليصة.',
     resultLabel: 'حالة الشحنة',
     result: 'في الطريق',
+    empty: 'أدخل رقم البوليصة ليظهر مسار الشحنة وحالتها هنا.',
   },
   why: {
     eyebrow: 'لماذا نحن الخيار الأفضل',
     title: 'مميزات متكاملة تساعد أعمالك على النمو',
     lede: 'نقدم لك أدوات وخدمات متطورة تجعل تجربة الشحن سهلة وسريعة وموثوقة.',
+    coverageUnit: 'محافظة',
     points: [
       {
         title: 'توصيل سريع وبدقة عالية',
@@ -253,6 +260,9 @@ const ar = {
     edit: 'تعديل البيانات',
     studioEmail: 'info@vision-soft.org',
     whatsappPhone: '201060050309',
+    reachTitle: 'أو تواصل معنا مباشرة',
+    whatsappLabel: 'واتساب',
+    emailLabel: 'البريد الإلكتروني',
   },
   login: {
     title: 'تسجيل الدخول',
@@ -265,6 +275,8 @@ const ar = {
   },
   footer: {
     blurb: 'حلول شحن موثوقة.',
+    linksTitle: 'روابط سريعة',
+    contactTitle: 'تواصل معنا',
     rights: '© 2026 فيجن سوفت — جميع الحقوق محفوظة',
   },
 }
@@ -295,14 +307,19 @@ const en = {
     langEnLabel: 'English',
   },
   hero: {
-    title: 'We deliver your business everywhere',
+    badge: 'Shipping and delivery across every governorate',
+    titleLead: 'We deliver your business',
+    titleAccent: 'everywhere',
     lede: 'Track your shipment, talk to us, and start shipping in a few simple steps.',
     primary: 'Track now',
     secondary: 'Register as a shipper',
     assurances: ['Parcel safety guaranteed', 'On-time pickup and delivery', 'Instant cash collection'],
     console: {
+      badge: 'Product preview',
       title: 'Live shipment tracking',
       lede: 'Enter the waybill number to follow the shipment',
+      waybillLabel: 'Waybill number',
+      sample: 'VS-0482-7731',
       stages: ['Received', 'Out for delivery', 'On the way', 'Delivered'],
       placeholder: 'Enter the local waybill number...',
       action: 'Track now',
@@ -351,11 +368,13 @@ const en = {
     error: 'Enter the waybill number.',
     resultLabel: 'Shipment status',
     result: 'On the way',
+    empty: 'Enter a waybill number to see the shipment route and status here.',
   },
   why: {
     eyebrow: 'Why we are the better choice',
     title: 'Features that help your business grow',
     lede: 'Tools and services that make shipping simple, fast, and reliable.',
+    coverageUnit: 'governorates',
     points: [
       {
         title: 'Fast, accurate delivery',
@@ -462,6 +481,9 @@ const en = {
     edit: 'Edit details',
     studioEmail: 'info@vision-soft.org',
     whatsappPhone: '201060050309',
+    reachTitle: 'Or reach us directly',
+    whatsappLabel: 'WhatsApp',
+    emailLabel: 'Email',
   },
   login: {
     title: 'Sign in',
@@ -474,6 +496,8 @@ const en = {
   },
   footer: {
     blurb: 'Reliable shipping.',
+    linksTitle: 'Quick links',
+    contactTitle: 'Get in touch',
     rights: '© 2026 Vision Soft — All rights reserved',
   },
 }
@@ -486,5 +510,5 @@ export const content = sameShape(ar, en)
 export type Copy = typeof ar
 
 export function displayFont(lang: Lang) {
-  return lang === 'en' ? 'font-display tracking-tight' : 'leading-[1.3]'
+  return lang === 'en' ? 'font-display tracking-tight leading-[1.1]' : 'leading-[1.35]'
 }

@@ -21,6 +21,13 @@ export type IconName =
   | 'shield'
   | 'wallet'
   | 'spark'
+  | 'bolt'
+  | 'route'
+  | 'map'
+  | 'warehouse'
+  | 'mail'
+  | 'chat'
+  | 'refresh'
 
 export function Icon({ name, className = 'h-5 w-5' }: { name: IconName; className?: string }) {
   const common = { viewBox: '0 0 24 24', className, 'aria-hidden': true as const, fill: 'none' }
@@ -178,6 +185,54 @@ export function Icon({ name, className = 'h-5 w-5' }: { name: IconName; classNam
       return (
         <svg {...common}>
           <path d="M12 3v4M12 17v4M3 12h4M17 12h4M6 6l2.5 2.5M15.5 15.5 18 18M18 6l-2.5 2.5M8.5 15.5 6 18" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
+        </svg>
+      )
+    case 'bolt':
+      return (
+        <svg {...common}>
+          <path d="M13 3 5 13.5h6L10 21l8-10.5h-6L13 3Z" stroke="currentColor" strokeWidth="1.7" strokeLinejoin="round" />
+        </svg>
+      )
+    case 'route':
+      return (
+        <svg {...common}>
+          <circle cx="6" cy="18" r="2.2" stroke="currentColor" strokeWidth="1.7" />
+          <circle cx="18" cy="6" r="2.2" stroke="currentColor" strokeWidth="1.7" />
+          <path d="M8.2 18H15a3 3 0 0 0 0-6H9a3 3 0 0 1 0-6h6.8" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" />
+        </svg>
+      )
+    case 'map':
+      return (
+        <svg {...common}>
+          <path d="M9 4 3.5 6v14L9 18l6 2 5.5-2V4L15 6 9 4Z" stroke="currentColor" strokeWidth="1.6" strokeLinejoin="round" />
+          <path d="M9 4v14M15 6v14" stroke="currentColor" strokeWidth="1.6" />
+        </svg>
+      )
+    case 'warehouse':
+      return (
+        <svg {...common}>
+          <path d="M3 20V9l9-5 9 5v11" stroke="currentColor" strokeWidth="1.6" strokeLinejoin="round" />
+          <path d="M7 20v-7h10v7M7 16.5h10" stroke="currentColor" strokeWidth="1.6" strokeLinejoin="round" />
+        </svg>
+      )
+    case 'mail':
+      return (
+        <svg {...common}>
+          <rect x="3" y="5.5" width="18" height="13" rx="2.2" stroke="currentColor" strokeWidth="1.6" />
+          <path d="m4 7.5 8 5.5 8-5.5" stroke="currentColor" strokeWidth="1.6" strokeLinejoin="round" />
+        </svg>
+      )
+    case 'chat':
+      return (
+        <svg {...common}>
+          <path d="M4.5 20 5.7 16.4A8 8 0 1 1 8.3 19L4.5 20Z" stroke="currentColor" strokeWidth="1.6" strokeLinejoin="round" />
+          <path d="M9.2 9.4c.3 2 2.4 4.2 4.6 4.8l1.1-1.2" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
+        </svg>
+      )
+    case 'refresh':
+      return (
+        <svg {...common}>
+          <path d="M19 12a7 7 0 1 1-2.05-4.95M19 4.5V9h-4.5" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" />
         </svg>
       )
   }

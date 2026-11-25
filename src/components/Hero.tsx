@@ -1,115 +1,121 @@
 import type { Copy, Lang } from '../content'
-import { displayFont } from '../content'
 import { cx } from '../cx'
 import { Icon, type IconName } from './Icon'
+import { arrowNudge, btnBase, btnGhost, btnPrimary } from './styles'
 
-const stageIcons: IconName[] = ['box', 'truck', 'pin', 'check']
-
-const btn =
-  'inline-flex items-center justify-center gap-2 rounded-full px-5 py-3 text-sm font-semibold transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal'
+const stageIcons: IconName[] = ['box', 'truck', 'route', 'check']
+const assuranceIcons: IconName[] = ['shield', 'clock', 'wallet']
+const CURRENT_STAGE = 2
 
 export function Hero({ copy, lang }: { copy: Copy['hero']; lang: Lang }) {
-  const glow = lang === 'ar' ? '88% 0%' : '12% 0%'
-
   return (
-    <section id="top" className="relative overflow-hidden bg-ink pt-28 text-white">
-      <div
-        className="pointer-events-none absolute inset-0"
-        style={{
-          background: `radial-gradient(900px 520px at ${glow}, rgba(30,212,194,0.28), transparent 58%), linear-gradient(165deg, #123056 0%, #071525 48%, #04101c 100%)`,
-        }}
-      />
-      <div className="pointer-events-none absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-ink to-transparent" />
-      <div className="relative mx-auto grid max-w-6xl items-center gap-10 px-5 pb-28 lg:grid-cols-2 lg:pb-36">
-        <div>
-          <h1 className={cx('max-w-xl text-4xl font-bold leading-[1.15] sm:text-5xl lg:text-6xl', displayFont(lang))}>
-            {copy.title}
+    <section id="top" className="relative isolate overflow-hidden bg-canvas text-ink">
+      <div className="mx-auto grid max-w-6xl items-center gap-10 px-5 pb-12 pt-28 sm:pt-32 lg:grid-cols-[1.05fr_0.95fr] lg:gap-16 lg:pb-16 lg:pt-36">
+        <div className="rise">
+          <p className="inline-flex items-center gap-2 rounded-full bg-signal-soft px-3 py-1 text-xs font-bold text-signal-deep">
+            <span className="h-1.5 w-1.5 rounded-full bg-signal" />
+            {copy.badge}
+          </p>
+
+          <h1
+            className={cx(
+              'mt-5 max-w-lg text-[1.7rem] font-extrabold leading-snug sm:text-4xl lg:text-[2.6rem]',
+              lang === 'en' && 'font-display tracking-tight leading-[1.1]',
+            )}
+          >
+            {copy.titleLead} <span className="text-signal">{copy.titleAccent}</span>
           </h1>
-          <p className="mt-5 max-w-xl text-base leading-relaxed text-white/70 sm:text-lg">{copy.lede}</p>
-          <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-            <a href="#preview" className={cx(btn, 'bg-teal text-ink hover:bg-white')}>
+
+          <p className="mt-4 max-w-md text-base leading-relaxed text-mist">{copy.lede}</p>
+
+          <div className="mt-7 flex flex-col gap-3 sm:flex-row sm:items-center">
+            <a href="#preview" className={cx(btnBase, btnPrimary, 'rounded-full px-5 py-3')}>
               {copy.primary}
-              <Icon name="arrow" className="h-4 w-4" />
+              <Icon name="arrow" className={arrowNudge} />
             </a>
-            <a href="#register" className={cx(btn, 'border border-white/15 bg-white/10 text-white hover:bg-white/15')}>
+            <a href="#register" className={cx(btnBase, btnGhost, 'rounded-full px-5 py-3')}>
               {copy.secondary}
             </a>
           </div>
-          <ul className="mt-8 flex flex-col gap-3 text-sm text-white/75 sm:flex-row sm:flex-wrap sm:gap-x-6">
-            {copy.assurances.map((item) => (
-              <li key={item} className="flex items-center gap-2">
-                <span className="flex h-5 w-5 items-center justify-center rounded-full border border-teal/70 text-teal">
-                  <Icon name="check" className="h-3.5 w-3.5" />
-                </span>
+
+          <ul className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:gap-x-5">
+            {copy.assurances.map((item, index) => (
+              <li key={item} className="inline-flex items-center gap-2 text-sm text-mist">
+                <Icon name={assuranceIcons[index] ?? 'check'} className="h-4 w-4 shrink-0 text-signal-deep" />
                 {item}
               </li>
             ))}
           </ul>
         </div>
 
-        <article className="rounded-[28px] border border-teal/20 bg-panel/90 p-5 shadow-[0_30px_80px_rgba(4,16,28,0.45),0_0_0_1px_rgba(30,212,194,0.08)] backdrop-blur-md sm:p-6">
-          <div className="flex items-start justify-between gap-4">
-            <div>
-              <h2 className={cx('text-lg font-bold', displayFont(lang))}>{copy.console.title}</h2>
-              <p className="mt-1 text-xs leading-relaxed text-white/55">{copy.console.lede}</p>
+        <div className="rise mx-auto w-full max-w-md lg:max-w-none" style={{ animationDelay: '120ms' }}>
+          <article className="rounded-3xl bg-white p-5 shadow-[0_24px_60px_-32px_rgba(12,39,68,0.28)] ring-1 ring-ink/8 sm:p-6">
+            <div className="flex items-start justify-between gap-3">
+              <div>
+                <p className="text-xs font-semibold text-mist">{copy.console.badge}</p>
+                <h2 className={cx('mt-1 text-lg font-bold', lang === 'en' && 'font-display tracking-tight')}>{copy.console.title}</h2>
+              </div>
+              <span className="inline-flex shrink-0 items-center gap-1.5 rounded-full bg-signal-soft px-2.5 py-1 text-[11px] font-bold text-signal-deep">
+                <span className="h-1.5 w-1.5 rounded-full bg-signal" />
+                {copy.console.stages[CURRENT_STAGE]}
+              </span>
             </div>
-            <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-teal/15 text-teal">
-              <Icon name="box" />
-            </span>
-          </div>
 
-          <ol className="relative mt-8 grid grid-cols-4">
-            <span className="absolute start-5 end-5 top-5 h-px bg-white/15" aria-hidden="true" />
-            <span className="absolute start-5 top-5 h-px w-2/3 bg-teal" aria-hidden="true" />
-            {copy.console.stages.map((stage, index) => {
-              const state = index < 2 ? 'done' : index === 2 ? 'current' : 'upcoming'
-              return (
-                <li key={stage} className="relative flex flex-col items-center gap-2 text-center">
-                  <span
-                    className={cx(
-                      'flex h-10 w-10 items-center justify-center rounded-full border',
-                      state === 'done' && 'border-teal bg-panel text-teal',
-                      state === 'current' && 'pulse-dot border-teal bg-teal text-ink',
-                      state === 'upcoming' && 'border-white/15 bg-panel text-white/45',
-                    )}
-                  >
-                    <Icon name={stageIcons[index] ?? 'check'} className="h-4 w-4" />
-                  </span>
-                  <span className={cx('text-[11px] font-medium sm:text-xs', state === 'current' ? 'text-teal' : 'text-white/60')}>
-                    {stage}
-                  </span>
-                </li>
-              )
-            })}
-          </ol>
+            <p className="mt-6 text-xs text-mist">{copy.console.waybillLabel}</p>
+            <p className="mt-1 font-display text-2xl font-bold tracking-wide text-ink">
+              <span dir="ltr">{copy.console.sample}</span>
+            </p>
 
-          <form
-            className="mt-6 grid gap-3"
-            onSubmit={(event) => {
-              event.preventDefault()
-              const data = new FormData(event.currentTarget)
-              const waybill = String(data.get('waybill') ?? '')
-              window.dispatchEvent(new CustomEvent('track-waybill', { detail: waybill }))
-              document.querySelector('#preview')?.scrollIntoView()
-            }}
-          >
-            <label className="flex items-center gap-3 rounded-2xl border border-white/10 bg-black/25 px-4 py-3 text-sm">
-              <Icon name="search" className="h-4 w-4 shrink-0 text-white/40" />
-              <input
-                name="waybill"
-                className="w-full bg-transparent text-white outline-none placeholder:text-white/35"
-                placeholder={copy.console.placeholder}
-              />
-            </label>
-            <button
-              type="submit"
-              className="inline-flex w-full items-center justify-center gap-2 rounded-2xl bg-teal py-3.5 text-sm font-bold text-ink transition hover:bg-white"
+            <ol className="relative mt-6 grid grid-cols-4">
+              <span aria-hidden="true" className="absolute start-[12.5%] end-[12.5%] top-3.5 h-px bg-line" />
+              <span aria-hidden="true" className="absolute start-[12.5%] top-3.5 h-px w-1/2 bg-signal" />
+              {copy.console.stages.map((stage, index) => {
+                const state = index < CURRENT_STAGE ? 'done' : index === CURRENT_STAGE ? 'current' : 'upcoming'
+                return (
+                  <li key={stage} className="relative flex flex-col items-center gap-2 text-center">
+                    <span
+                      className={cx(
+                        'flex h-7 w-7 items-center justify-center rounded-full',
+                        state === 'done' && 'bg-white text-signal ring-1 ring-signal',
+                        state === 'current' && 'bg-signal text-ink',
+                        state === 'upcoming' && 'bg-white text-mist ring-1 ring-line',
+                      )}
+                    >
+                      <Icon name={stageIcons[index] ?? 'check'} className="h-3.5 w-3.5" />
+                    </span>
+                    <span className={cx('text-[11px] leading-tight', state === 'upcoming' ? 'text-mist/70' : 'font-medium text-ink')}>
+                      {stage}
+                    </span>
+                  </li>
+                )
+              })}
+            </ol>
+
+            <form
+              className="mt-6 flex flex-col gap-2 sm:flex-row sm:items-center sm:rounded-full sm:bg-canvas sm:p-1.5 sm:ring-1 sm:ring-line"
+              onSubmit={(event) => {
+                event.preventDefault()
+                const data = new FormData(event.currentTarget)
+                const waybill = String(data.get('waybill') ?? '')
+                window.dispatchEvent(new CustomEvent('track-waybill', { detail: waybill }))
+                document.querySelector('#preview')?.scrollIntoView()
+              }}
             >
-              {copy.console.action}
-              <Icon name="arrow" className="h-4 w-4" />
-            </button>
-          </form>
-        </article>
+              <label className="flex flex-1 items-center gap-2 rounded-full bg-canvas px-4 py-2.5 text-sm ring-1 ring-line sm:bg-transparent sm:py-0 sm:ring-0">
+                <span className="sr-only">{copy.console.waybillLabel}</span>
+                <Icon name="search" className="h-4 w-4 shrink-0 text-mist" />
+                <input
+                  name="waybill"
+                  className="w-full bg-transparent text-ink outline-none placeholder:text-mist/70"
+                  placeholder={copy.console.placeholder}
+                />
+              </label>
+              <button type="submit" className={cx(btnBase, btnPrimary, 'rounded-full px-4 py-2.5')}>
+                {copy.console.action}
+              </button>
+            </form>
+          </article>
+        </div>
       </div>
     </section>
   )

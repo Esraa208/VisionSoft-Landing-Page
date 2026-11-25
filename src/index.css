@@ -1,0 +1,266 @@
+@import "tailwindcss";
+@import "@fontsource/tajawal/400.css";
+@import "@fontsource/tajawal/500.css";
+@import "@fontsource/tajawal/700.css";
+@import "@fontsource/tajawal/800.css";
+@import "@fontsource/sora/400.css";
+@import "@fontsource/sora/500.css";
+@import "@fontsource/sora/600.css";
+@import "@fontsource/sora/700.css";
+@import "@fontsource/sora/800.css";
+
+/*
+ * Logistics palette
+ * - ink / navy / panel: midnight navy, the color of ports, hubs, and night routes
+ * - signal: courier orange, speed and the action color (CTAs, live status)
+ * - route: GPS blue, maps and live tracking
+ * - go: delivery green, delivered and success only
+ * - canvas: warm manifest paper, so the page reads like operations not generic SaaS
+ */
+@theme {
+  --font-sans: "Tajawal", sans-serif;
+  --font-display: "Sora", "Tajawal", sans-serif;
+
+  --color-canvas: #f4f1eb;
+  --color-canvas-deep: #eae4da;
+  --color-card: #ffffff;
+  --color-line: #e3dcd1;
+  --color-ink: #07131c;
+  --color-navy: #0c2744;
+  --color-panel: #16375f;
+  --color-mist: #5d6b76;
+
+  --color-signal: #ff5c1c;
+  --color-signal-bright: #ff7a3d;
+  --color-signal-soft: #fff1e8;
+  --color-signal-deep: #c2410c;
+  --color-amber: #ffb020;
+
+  --color-route: #1b7fe8;
+  --color-route-soft: #e8f3ff;
+  --color-route-deep: #0b5cab;
+
+  --color-go: #12b76a;
+  --color-go-soft: #e5f8ef;
+  --color-go-deep: #067647;
+
+  --color-alert: #e11d48;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    margin: 0;
+    min-height: 100vh;
+    background: var(--color-canvas);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  :lang(en) body {
+    font-family: "Sora", "Tajawal", sans-serif;
+  }
+
+  section[id],
+  #register {
+    scroll-margin-top: 6rem;
+  }
+
+  ::selection {
+    background: var(--color-signal);
+    color: var(--color-ink);
+  }
+
+  :where(a, button, summary):focus-visible {
+    outline: 2px solid var(--color-signal);
+    outline-offset: 3px;
+  }
+}
+
+[dir='rtl'] .mirror {
+  transform: scaleX(-1);
+}
+
+[dir='rtl'] input[dir='ltr'],
+[dir='rtl'] textarea[dir='ltr'] {
+  text-align: right;
+}
+
+@layer components {
+  /* Night-route hero: navy depth, courier glow on the product side, GPS glow opposite */
+  .hero-bg {
+    --glow-x: 78%;
+    background:
+      radial-gradient(32rem 22rem at var(--glow-x) 18%, rgb(255 92 28 / 0.14), transparent 62%),
+      radial-gradient(28rem 20rem at calc(100% - var(--glow-x)) 88%, rgb(27 127 232 / 0.12), transparent 64%),
+      linear-gradient(180deg, #0d2b4a 0%, var(--color-ink) 72%);
+  }
+
+  [dir='rtl'] .hero-bg {
+    --glow-x: 18%;
+  }
+
+  /* Dotted "map" texture */
+  .map-dots {
+    background-image: radial-gradient(rgb(255 255 255 / 0.13) 1px, transparent 1.3px);
+    background-size: 22px 22px;
+    mask-image: radial-gradient(ellipse 75% 65% at 50% 40%, black 15%, transparent 78%);
+  }
+
+  .marquee-mask {
+    mask-image: linear-gradient(to right, transparent, black 12%, black 88%, transparent);
+  }
+
+  .paper-grid {
+    background-image:
+      linear-gradient(to right, rgb(12 39 68 / 0.045) 1px, transparent 1px),
+      linear-gradient(to bottom, rgb(12 39 68 / 0.045) 1px, transparent 1px);
+    background-size: 72px 72px;
+  }
+
+  .field-select {
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2356637a' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 1rem center;
+    background-size: 1rem;
+    padding-inline-end: 2.75rem;
+  }
+
+  [dir='rtl'] .field-select {
+    background-position: left 1rem center;
+  }
+
+  .lift {
+    transition-property: transform, box-shadow, background-color, color;
+    transition-duration: 0.35s;
+    transition-timing-function: cubic-bezier(0.2, 0.7, 0.2, 1);
+  }
+
+  .lift:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 22px 50px -24px rgb(10 22 40 / 0.35);
+  }
+
+  .pulse-dot {
+    animation: status-pulse 2.1s ease-out infinite;
+  }
+
+  .ping-ring {
+    animation: ping-ring 2.6s cubic-bezier(0.2, 0.7, 0.2, 1) infinite;
+  }
+
+  .rise {
+    animation: rise 0.9s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+  }
+
+  .float-y {
+    animation: float-y 6s ease-in-out infinite;
+  }
+
+  .route-path {
+    animation: route-dash 26s linear infinite;
+  }
+
+  .marquee {
+    animation: marquee 38s linear infinite;
+  }
+
+  [dir='rtl'] .marquee {
+    animation-name: marquee-rtl;
+  }
+
+  /* Scroll-driven reveal (progressive enhancement, CSS only) */
+  @supports (animation-timeline: view()) {
+    .reveal {
+      animation: rise linear both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 45%;
+    }
+  }
+}
+
+@keyframes status-pulse {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 rgb(255 92 28 / 0.55);
+  }
+  70% {
+    box-shadow: 0 0 0 9px rgb(255 92 28 / 0);
+  }
+}
+
+@keyframes ping-ring {
+  0% {
+    box-shadow: 0 0 0 0 rgb(255 92 28 / 0.45);
+  }
+  100% {
+    box-shadow: 0 0 0 26px rgb(255 92 28 / 0);
+  }
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(22px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes float-y {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-9px);
+  }
+}
+
+@keyframes route-dash {
+  to {
+    stroke-dashoffset: -560;
+  }
+}
+
+@keyframes marquee {
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@keyframes marquee-rtl {
+  to {
+    transform: translateX(50%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  .lift,
+  .pulse-dot,
+  .ping-ring,
+  .rise,
+  .reveal,
+  .float-y,
+  .route-path,
+  .marquee {
+    animation: none;
+    transition: none;
+  }
+
+  .lift:hover {
+    transform: none;
+  }
+}

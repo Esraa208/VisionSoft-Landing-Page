@@ -6,7 +6,7 @@ const icons: IconName[] = ['box', 'clock', 'users', 'headset']
 
 export function Stats({ items, lang }: { items: Copy['stats']; lang: Lang }) {
   return (
-    <section className="pb-10">
+    <section className="mt-10 pb-10 lg:mt-16">
       <div className="mx-auto max-w-6xl px-5">
         <dl className="grid grid-cols-2 gap-px overflow-hidden rounded-2xl bg-line shadow-[0_18px_40px_-24px_rgba(12,39,68,0.28)] ring-1 ring-ink/8 lg:grid-cols-4">
           {items.map((item, index) => (

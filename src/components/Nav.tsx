@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { Link } from 'react-router-dom'
 import type { Copy, Lang } from '../content'
 import { cx } from '../cx'
 import { Icon } from './Icon'
@@ -126,8 +127,8 @@ export function Nav({
               {copy.nav.langEn}
             </button>
           </div>
-          <a
-            href={`/${lang}/login`}
+          <Link
+            to={`/${lang}/login`}
             className={cx(
               btnPrimary,
               'group hidden items-center justify-center gap-2 whitespace-nowrap rounded-xl px-3.5 py-2.5 text-sm font-bold transition duration-300 sm:inline-flex',
@@ -135,7 +136,7 @@ export function Nav({
           >
             <Icon name="user" className="h-4 w-4" />
             {copy.nav.login}
-          </a>
+          </Link>
           <button
             type="button"
             className="inline-flex h-10 w-10 items-center justify-center rounded-xl border border-line bg-white xl:hidden"
@@ -177,10 +178,10 @@ export function Nav({
               </li>
             ))}
           </ul>
-          <a href={`/${lang}/login`} onClick={close} className={cx(btnBase, btnPrimary, 'mt-3 w-full rounded-xl px-4 py-3.5')}>
+          <Link to={`/${lang}/login`} onClick={close} className={cx(btnBase, btnPrimary, 'mt-3 w-full rounded-xl px-4 py-3.5')}>
             <Icon name="user" className="h-4 w-4" />
             {copy.nav.login}
-          </a>
+          </Link>
         </nav>
       )}
     </header>
